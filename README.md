@@ -1,5 +1,5 @@
 # Magnetron
-Magnetron is a survey chat bot created by Team Cynergy of MediaLAB/DSS Amsterdam.
+Magnetron is a green energy survey chat bot created by Team Cynergy of [MediaLAB/DSS Amsterdam](https://digitalsocietyschool.org/).
 
 For more information on the project, check out https://greenamsterdam.nl.
 Specific information about Magnetron can be found at https://greenamsterdam.nl/blog/2018/04/13/magnetron/
