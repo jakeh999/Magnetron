@@ -1,0 +1,19 @@
+{
+    "name": "MAGNETRON",
+    "short_name": "MAGNETRON",
+    "icons": [
+        {
+            "src": "/survey/android-chrome-192x192.png?v=PY4PLAQrdz",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/survey/android-chrome-512x512.png?v=PY4PLAQrdz",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}

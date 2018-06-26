@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/survey/apple-touch-icon.png?v=PY4PLAQrdz">
+    <link rel="icon" type="image/png" sizes="32x32" href="/survey/favicon-32x32.png?v=PY4PLAQrdz">
+    <link rel="icon" type="image/png" sizes="16x16" href="/survey/favicon-16x16.png?v=PY4PLAQrdz">
+    <link rel="manifest" href="/survey/site.webmanifest?v=PY4PLAQrdz">
+    <link rel="mask-icon" href="/survey/safari-pinned-tab.svg?v=PY4PLAQrdz" color="#5bbad5">
+    <link rel="shortcut icon" href="/survey/favicon.ico?v=PY4PLAQrdz">
+    <meta name="apple-mobile-web-app-title" content="MAGNETRON">
+    <meta name="application-name" content="MAGNETRON">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/survey/browserconfig.xml?v=PY4PLAQrdz">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Bootstrap & CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/landing.css?v=2">
+    <title>Privacy - MAGNETRON</title>
+    <script>
+        function GET(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+        function change_lang(lang, hide) {
+            document.getElementById(lang).style.display = "block";
+            document.getElementById(hide).style.display = "none";
+        }
+    </script>    
+  </head>
+  <body>
+   <div class="container" id="pink">
+       <div class="row">
+            <div class="col text-center text-md-left pt-lg-2">
+                <img src="img/leaf.svg" width="81" height="88">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-1" id="yellow">
+                <div class="row pr-0">
+                    <div class="col-xl-3 col-lg-3 text-center text-lg-left pt-lg-5 pl-lg-5">
+                        <img src="img/robot.svg" width="161" height="247">
+                    </div>
+                    <div class="col-xl-6 col-lg-5 pt-lg-5" style="text-align:center; padding-bottom:30px;">
+                        <span id="en" lang="en">
+                                <p class="hello">Hi,<br>I'm Magnetron</p>
+                                <p class="subtitle">the energy survey bot</p>
+                                <div class="line"></div>
+                                <p class="txt" style="font-size: 20px; margin-bottom:50px;">
+                                        Magnetron is a survey used for univeristy research purposes. By talking to Magnetron, you consent that your responses will be saved and used for research only. You may withdraw your consent at any time by sending an e-mail to <a href="mailto:contact@greenamsterdam.nl">contact@greenamsterdam.nl</a>, after which all your data will be deleted. This site uses cookies for analytics and optionally to remember your survey progress.
+                                </p>
+                                <a class="form-check" href="index.html?lang=en&forget=" id="back_en"><span id="btn">back</span></a>
+                                <p class="form-check" style="margin-top: 50px;"><a href="#" onclick="change_lang('nl','en');return false;">Ik spreek ook Nederlands! <img class="flag" src="img/nl.svg" alt="🇳🇱" height="15" width="20"></a></p>
+                            </span>
+                            <span id="nl" lang="nl" style="display:none;">
+                                    <p class="hello">Hoi,<br>Ik ben Magnetron</p>
+                                    <p class="subtitle">de energie enquête robot</p>
+                                    <div class="line"></div>
+                                    <p class="txt" style="font-size: 20px; margin-bottom:50px;">
+                                            Magnetron is een enquête gebruikt voor universitaire onderzoeksdoeleinden. Door te praten met Magnetron accepteer je antwoorden opgeslagen worden en toegepast mogen zijn  voor onderzoek. U mag uw acceptatie ongeldig maken door een email te sturen naar <a href="mailto:contact@greenamsterdam.nl">contact@greenamsterdam.nl</a> en al uw data zal worden verwijderd. Deze site gebruikt cookies voor analytische data and mogelijk om voortgang op te slaan.
+                                    </p>
+                                    <a class="form-check" href="index.html?lang=nl&forget=" id="back_nl"><span id="btn">terug</span></a>
+                                    <p class="form-check" style="margin-top: 50px;"><a href="#" onclick="change_lang('en','nl');return false;">I also speak English! <img class="flag" src="img/us.svg" alt="🇺🇸" height="15" width="20"></a></p>
+                            </span>
+                            <script>
+                                if (GET('lang') == 'nl') {
+                                    change_lang('nl','en');
+                                }
+                                if ((navigator.language.substr(0,2)=='nl') && (GET('lang')!='en')) {
+                                    change_lang('nl','en');
+                                }
+                                if (GET('forget') == 'true') {
+                                    document.getElementById('back_en').href += 'true';
+                                    document.getElementById('back_nl').href += 'true';
+                                }
+                            </script>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 text-center text-lg-right">
+                        <a href="/"><img src="img/cynergy.svg" width="209" height="65"></a>
+                    </div>
+                </div>
+            </div> 
+        </div>
+   </div>
+  </body>
+</html>

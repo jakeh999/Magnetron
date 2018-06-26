@@ -1,0 +1,377 @@
+  <!-- Begin Dutch Version -->
+  <!-- Name -->
+  <fieldset>
+    <label for="name">Wie ben jij?</label>
+    <input required cf-questions="Wie ben jij?" type="text" class="form-control" name="name" id="name" cf-error="Ik zou graag alleen je voornaam willen weten" cf-validation="window.nameCheck">
+  </fieldset>
+  <script>
+    var nameCheck = function(dto, success, error){
+        //console.log("nameValidation, dto:", dto, success, error);
+        var user_name = dto.text.trim();
+        //var phrases = ["I'm", "I am", "Im", "My name is", "Ik ben"];
+  
+        if (dto.text.trim().indexOf(" ") > -1) {
+          return error();
+        }
+        if (!forget) {
+          Cookies.set('user_name', dto.text.trim(), { expires: 10, path: '/survey/' });
+        }
+        return success();
+    };
+    </script>
+  <!-- being polite -->
+  <fieldset cf-questions="Leuk je te ontmoeten, {name}! Ik ben Magnetron, een energie enquête survey robot. Zou ik jou misschien wat vragen mogen stellen?" id="intro">
+    <label for="intro-yes">Ja <input type="radio" name="cfc-intro" id="intro-yes" value="yes"></label>
+    <label for="intro-no">Liever niet <input type="radio" name="cfc-intro" id="intro-no" value="no"></label>
+  </fieldset>
+
+    <fieldset cf-questions="Maar, {name}, alsjeblieft?! 🙏 Ik beloof dat het ongeveer 10 minuten zal duren!" id="intro2">
+        <label for="intro-yes-3">Ok dan!<input type="radio" id="intro-yes-2" name="cfc-intro-2" cf-conditional-cfc-intro="no"></label>
+        <label for="intro-no-3">Maar natuurlijk!<input type="radio" id="intro-yes-3" name="cfc-intro-2" cf-conditional-cfc-intro="no"></label>
+    </fieldset>
+
+  <!-- Gender -->
+    <fieldset cf-questions="Super! Let's go! Ik vroeg me af, wat is je gender?">
+        <label for="gender-male">Man <input required type="radio" name="gender" id="gender-male" value="male"></label>
+        <label for="gender-male">Vrouw <input required type="radio" name="gender" id="gender-female" value="female"></label>
+        <label for="gender-other">Anders <input required type="radio" name="gender" id="gender-other" value="other"></label>
+  </fieldset>
+
+  <!-- Age -->
+  <input type="text" id="age" name="age" cf-questions="Goed om te weten! Zou ik ook je leeftijd mogen weten?" cf-error="Oeps, dat ziet er niet uit als een getal" required cf-validation="window.ageCheck">
+  <script>
+    var ageCheck = function(dto, success, error){
+      //console.log("ageValidation, dto:", dto, success, error);
+      if (isNo(dto.text)) {
+        window.ConversationalForm.addRobotChatResponse("Ok, dan niet. Ik hoefde het toch niet te weten...");
+        return success();
+      }
+      if(isNaN(dto.text)) {
+          return error();
+      } else {
+          var age = Number(dto.text);
+          var msg;
+          //if (document.getElementById("name").value.toLowerCase()=="barbara") {
+              //TODO: Remove barbara
+            //window.ConversationalForm.addRobotChatResponse("You're not just old, you're ancient, Cruella de Vil!");
+            //return success();
+          //}
+          if (age < 1) {
+              return error();
+          }
+          if (age < 16) {
+            msg = "Ben je niet een beetje te jong hiervoor?";
+          } else if ((age > 40) && (age <= 122)) {
+            msg = "Oh echt? Ik had je jonger ingeschat";
+        } else if (age > 122) {
+            msg = "Je bent de oudste persoon die ooit heeft geleefd!! Tijd om je aan te melden voor de Guiness Book of World Records!!";
+          } else {
+            msg = "Wat een goeie leeftijd!";
+          }
+          window.ConversationalForm.addRobotChatResponse(msg);
+          return success();
+      }
+  };
+  </script>
+
+<!-- Do you live in AMS -->
+<fieldset cf-questions="Maar goed, woon je eigenlijk in Amsterdam?">
+  <label for="live-yes">Ja! ❌❌❌<input type="radio" name="live" id="live-yes" value="yes"></label>
+  <label for="live-no">Nee 😢<input type="radio" name="live" id="live-no" value="no"></label>
+</fieldset>
+
+<!-- Neighborhood (only if lives in AMS -->
+<fieldset>
+  <label for="neighborhood">Buurt</label>
+  <input required type="text" name="neighborhood" id="neighborhood" cf-questions="Wat toevallig! Ik woon ook in Amsterdam. mag ik weten in welke buurt je woont?" cf-conditional-live="yes" cf-validation="window.neighborhoodCheck">
+</fieldset>
+<script>
+  var neighborhoodCheck = function(dto, success, error){
+      //console.log("neighborhoodValidation, dto:", dto, success, error);
+      if ((dto.text.toLowerCase() == 'oost') && (document.getElementById('name').value.toLowerCase() == 'anna') && (Number(document.getElementById('age').value) == 23)) {
+        window.ConversationalForm.addRobotChatResponse('<img src="img/dolphin.gif">');
+      }
+      if (isNo(dto.text)) {
+            window.ConversationalForm.addRobotChatResponse("Maak je maar geen zorgen, ik probeer je niet te stalken. Maar prima!");
+      } else {
+        window.ConversationalForm.addRobotChatResponse(dto.text + ", dat is mijn favoriete buurt ❤️");
+      }
+      return success();
+  };
+</script>
+
+<!-- Postal Code (only if lives in AMS) -->
+<fieldset>
+  <label for="postal">Postal Code</label>
+  <input type="text" name="postal" id="postal" cf-questions="Mag ik je postcode weten?" cf-conditional-live="yes" cf-error="Oeps! Volgens mij is dat geen geldige Nederlandse postcode 😔" cf-validation="window.postalCheck">
+</fieldset>
+<script>
+  var postalRegex = /^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i;
+  var postalCheck = function(dto, success, error){
+      //console.log("postalValidation, dto:", dto, success, error);
+      var postal = dto.text;
+      postal = postal.replace(" ", "");
+      if (isNo(postal)) {
+            window.ConversationalForm.addRobotChatResponse("Maak je maar geen zorgen, ik probeer je niet te stalken! Maar prima!");
+            return success();
+      }
+      if(postalRegex.test(postal)) {
+          window.ConversationalForm.addRobotChatResponse("Thx!");
+          return success();
+      } else {
+          return error();
+      }
+  };
+</script>
+
+<!-- Occupation -->
+<fieldset cf-questions="Wat doe je eigenlijk in het dagelijks leven?">
+  <label for="occupation-work">Werk <input type="radio" name="occupation" id="occupation-work" value="work"></label>
+  <label for="occupation-study">studeren <input type="radio" name="occupation" id="occupation-study" value="study"></label>
+  <label for="occupation-work">iets anders <input type="radio" name="occupation" id="occupation-other" value="other"></label>
+</fieldset>
+
+<!-- if occupation other -->
+<input type="text" required name="if-occupation-other" id="if-occupation-other" cf-questions="Kan je me wat meer vertellen over wat je doet?" cf-conditional-occupation="other" cf-validation="window.other_occupationCheck">
+<script>
+    var other_occupationCheck = function(dto, success, error){
+      //console.log("other_occupationValidation, dto:", dto, success, error);
+      if(isNo(dto.text)) {
+          window.ConversationalForm.addRobotChatResponse("Ah wat jammer, ik had graag willen weten wat je doet in het dagelijks leven... Maar het is ok😔");
+          return success();
+      } else {
+          window.ConversationalForm.addRobotChatResponse("Leuk!");
+          return success();
+      }
+  };
+</script>  
+
+<!-- Study --> 
+<fieldset cf-questions="Trouwens, ik zou ook graag willen weten wat je hoogst behaalde diploma is? 👩‍🎓👨‍🎓">
+    <label for="study-elem">Basisschool <input type="radio" name="study" id="study-elem" value="Elementary"></label>
+    <label for="study-high">Middelbare school <input type="radio" name="study" id="study-high" value="High"></label>
+    <label for="study-mbo">MBO <input type="radio" name="study" id="study-mbo" value="MBO"></label>
+    <label for="study-hbo">Bachelor HBO <input type="radio" name="study" id="study-hbo" value="HBO"></label>
+    <label for="study-wo">Bachelor WO <input type="radio" name="study" id="study-wo" value="WO"></label>
+    <label for="study-master">Master <input type="radio" name="study" id="study-master" value="Master"></label>
+    <label for="study-dr">Doctoraat (PhD) <input type="radio" name="study" id="study-dr" value="PhD"></label>
+    <label for="study-other">Anders <input type="radio" name="study" id="study-other" value="Other"></label>
+  </fieldset>
+
+<!-- if study other -->
+<input type="text" required name="if-study-other" id="if-study-other" cf-questions="Zou je mij wat meer kunnen vertellen over je studies?" cf-conditional-study="Other" cf-validation="window.other_studyCheck">
+<script>
+    var other_studyCheck = function(dto, success, error){
+      //console.log("other_studyValidation, dto:", dto, success, error);
+      if(isNo(dto.text)) {
+          window.ConversationalForm.addRobotChatResponse("Jammer, ik had graag wat meer willen weten, maar het is ok. 😔");
+          return success();
+      } else {
+          window.ConversationalForm.addRobotChatResponse("Nice!");
+          return success();
+      }
+  };
+</script>
+
+<!-- Housing -->
+<fieldset cf-questions="In wat voor een soort huis woon je?">
+  <label for="house-parents">Ik woon bij mijn ouders <input type="radio" name="house" id="house-parents" value="Parents"></label>
+  <label for="house-wg">Ik heb huisgenoten <input type="radio" name="house" id="house-wg" value="Shared Apartment"></label>
+  <label for="house-apartment">Appartement <input type="radio" name="house" id="house-apartment" value="Apartment"></label>
+  <label for="house-house">Huis <input type="radio" name="house" id="house-house" value="House"></label>
+  <label for="house-other">Iets anders <input type="radio" name="house" id="house-other" value="Other"></label>
+</fieldset>
+
+<!-- if housing other -->
+<input type="text" required name="if-house-other" id="if-house-other" cf-questions="Kan je mij wat meer vertellen over je huissituatie?" cf-conditional-house="Other" cf-validation="window.other_houseCheck">
+<script>
+    var other_houseCheck = function(dto, success, error){
+      //console.log("other_houseValidation, dto:", dto, success, error);
+      if(isNo(dto.text)) {
+          window.ConversationalForm.addRobotChatResponse("Jammer, ik had graag wat meer willen weten, maar het is ok. 😔");
+          return success();
+      } else {
+          window.ConversationalForm.addRobotChatResponse("Bedankt voor de informatie!");
+          return success();
+      }
+  };
+</script>
+
+<!-- Rent or Own -->
+<fieldset cf-questions="Dus, huur je of heb je deze plek gekocht?">
+    <label for="rent-status-rent">Ik huur <input type="radio" name="rent-status" id="rent-status-rent" value="rent"></label>
+    <label for="rent-status-own">Ik ben eigenaar <input type="radio" name="rent-status" id="rent-status-own" value="own"></label>
+</fieldset>
+
+<!-- Energy Provider -->
+<fieldset cf-questions="Top! Welke energieleverancier heb je? 🔋">
+  <label for="energy-essent">Essent <input type="radio" name="energy" id="energy-essent" value="Essent"></label>
+  <label for="energy-nuon">Nuon <input type="radio" name="energy" id="energy-nuon" value="Nuon"></label>
+  <label for="energy-EON">EON <input type="radio" name="energy" id="energy-EON" value="EON"></label>
+  <label for="energy-Oxxio">Oxxio <input type="radio" name="energy" id="energy-Oxxio" value="Oxxio"></label>
+  <label for="energy-GreenChoice">Green Choice <input type="radio" name="energy" id="energy-GreenChoice" value="Green Choice"></label>
+  <label for="energy-PowerPeers">Power Peers <input type="radio" name="energy" id="energy-PowerPeers" value="Power Peers"></label>
+  <label for="energy-Vandebron">Vandebron <input type="radio" name="energy" id="energy-Vandebron" value="Vandebron"></label>
+  <label for="energy-other">Iets anders <input type="radio" name="energy" id="energy-other" value="Other"></label>
+  <label for="energy-idk">Ik weet het het niet zeker <input type="radio" name="energy" id="energy-idk" value="Not sure"></label>
+</fieldset>
+
+<!-- If other energy provider -->
+<input required type="text" name="if-energy-other" id="if-energy-other" cf-questions="Ok, welke energieleverancier heb je dan?" cf-conditional-energy="Other">
+
+<!-- Energy awareness -->
+<fieldset cf-questions="Bedankt voor het delen! Ik vroeg me af, ben je al bewust van je energiegebruik?<br>Bijvoorbeeld, doe je de lampen en/of verwarming uit wanneer je een kamer verlaat; gebruik je energiebesparende apparaten; koppel je niet gebruikte apparaten los van de stekker of is je huis voorzien van dubbel glas en isolatie?">
+  <label for="energy-aware-yes">Ja zeker! <input type="radio" name="energy-aware" id="energy-aware-yes" value="Yes"></label>
+  <label for="energy-aware-bit">een beetje. <input type="radio" name="energy-aware" id="energy-aware-bit" value="Bit"></label>
+  <label for="energy-aware-no">Nee 😢 <input type="radio" name="energy-aware" id="energy-aware-no" value="No"></label>
+</fieldset>
+
+<!-- if energy aware -->
+<input required type="text" name="if-energy-aware" id="if-energy-aware" cf-questions="Geweldig! Hier heb je een gouden ster 🌟<br>Kan je me precies uitleggen wat je allemaal doet?" cf-conditional-energy-aware="Yes||Bit">
+
+<!-- if not energy aware -->
+<fieldset cf-questions="Dat is jammer. Ben je bereid om iets op te geven als het iets betekende voor het redden van de aarde (en het geld dat bespaard wordt op je rekening 🤑)">
+    <label for="if-not-energy-aware-yes">Zeker! <input type="radio" name="if-not-energy-aware" id="if-not-energy-aware-yes" value="Yes" cf-conditional-energy-aware="No"></label>
+    <label for="if-not-energy-aware-maybe">Daar moet ik over nadenken <input type="radio" name="if-not-energy-aware" id="if-not-energy-aware-maybe" value="Maybe" cf-conditional-energy-aware="No"></label>
+    <label for="if-not-energy-aware-no">Ik wil mijn leven niet veranderen <input type="radio" name="if-not-energy-aware" id="if-not-energy-aware-no" value="No" cf-conditional-energy-aware="No"></label>
+</fieldset>
+
+<!-- Natural gas -->
+<fieldset cf-questions="Ok dan! Ik vroeg me af, gebruik je thuis aardgas?">
+  <label for="natural-gas-both">Voor de verwarming en koken <input type="radio" name="natural-gas" id="natural-gas-both" value="Both"></label>
+  <label for="natural-gas-heating">Alleen voor de verwarming <input type="radio" name="natural-gas" id="natural-gas-heating" value="Heating"></label>
+  <label for="natural-gas-cooking">Alleen voor koken <input type="radio" name="natural-gas" id="natural-gas-cooking" value="Cooking"></label>
+  <label for="natural-gas-other">Ik gebruik aardgas, maar voor iets anders <input type="radio" name="natural-gas" id="natural-gas-other" value="Other"></label>
+  <label for="natural-gas-no">Ik gebruik geen aardgas <input type="radio" name="natural-gas" id="natural-gas-no" value="No"></label>
+  <label for="natural-gas-idk">Ik weet het niet zeker 🤔 <input type="radio" name="natural-gas" id="natural-gas-idk" value="idk"></label>
+</fieldset>
+
+<!-- if natural gas other -->
+<input required type="text" id="if-natural-gas-other" name="if-natural-gas-other" cf-conditional-natural-gas="Other" cf-questions="Ah ok waarvoor gebruik je aardgas dan wel?">
+
+<!-- 2025 -->
+<fieldset cf-questions="Goed om te weten, {name}! Trouwens, wist je dat Amsterdam van het gas af wilt zijn in 2050?" id="2025">
+    <label for="2025-yes">Dat wist ik al! <input type="radio" name="aware-2025" id="2025-yes" value="Yes"></label>
+    <label for="2025-no">Nee, dat klinkt niet bekend in de oren<input type="radio" name="aware-2025" id="2025-no" value="No"></label>
+</fieldset>
+
+<!-- Give up natural gas -->
+<fieldset cf-questions="Dat is het doel! Zou je bereid zijn om van het gas af te gaan om hiermee te helpen?">
+    <label for="reduce-gas-yes">Ik ben bereid! <input type="radio" name="reduce-gas" id="reduce-gas-yes" value="Yes"></label>
+    <label for="reduce-gas-maybe">Misschien 🤔 <input type="radio" name="reduce-gas" id="reduce-gas-maybe" value="Maybe"></label>
+    <label for="reduce-gas-no">Nee, dat ben ik niet. <input type="radio" name="reduce-gas" id="reduce-gas-no" value="No"></label>
+</fieldset>
+
+<!-- Wouldn't want to give up natural gas -->
+<input required cf-questions="Niet? Dat maakt me een beetje verdrietig 😢 Kun je mij vertellen waarom niet?" cf-conditional-reduce-gas="No" id="if-reduce-gas-no" name="if-reduce-gas-no">
+
+<!-- Green energy -->
+<fieldset cf-questions="Ah, bijna vergeten te vragen: koop je groene energie van je energieleverancier?">
+    <label for="green-energy-yes">Ja en het is allemaal groen! <input type="radio" name="green-energy" id="green-energy-yes" value="Yes"></label>
+    <label for="green-energy-partially">Een gedeelte is groen<input type="radio" name="green-energy" id="green-energy-partially" value="Partially"></label>
+    <label for="green-energy-no">Ik koop geen groene energie <input type="radio" name="green-energy" id="green-energy-no" value="No"></label>
+    <label for="green-energy-idk">Ik weet niet zeker of er groene energie bij zit<input type="radio" name="green-energy" id="green-energy-idk" value="idk"></label>
+</fieldset>
+
+<!-- if buys green energy -->
+<input required cf-questions="Ik ben zo trots op jou! Je krijgt een bedankje van Moeder Aarde! 😊🌎<br>Wat heeft je bewogen om groene energie te kopen?" name="if-green-energy-why" id="if-green-energy-why" cf-conditional-green-energy="Yes||Partially">
+<input required cf-questions="Ik begrijp je! En hoe was je ervaring met het kopen van groene energie?" name="if-green-energy-how" id="if-green-energy-how" cf-conditional-green-energy="Yes||Partially">
+<fieldset cf-questions="Hm ja. Was het gemakkelijk om de informatie over groene energie te vinden?">
+  <label for="if-green-energy-ease-yes">Ja, dat was het inderdaad <input type="radio" name="if-green-energy-ease" id="if-green-energy-ease-yes" value="Yes" cf-conditional-green-energy="Yes||Partially"></label>
+  <label for="if-green-energy-ease-no">Nee niet echt. <input type="radio" name="if-green-energy-ease" id="if-green-energy-ease-no" value="No" cf-conditional-green-energy="Yes||Partially"></label>
+</fieldset>
+<input required cf-questions="Dat is goed om te weten. Zou je mij kunnen vertellen hoe je de informatie over het kopen van groene enrgie hebt gevonden?" name="if-green-energy-buying" id="if-green-energy-buying" cf-conditional-green-energy="Yes||Partially">
+
+<!-- Generating green energy -->
+<fieldset cf-questions="Ok dan, hier is de vraag die ik al heel lang heb willen stellen: wek jij je eigen groene energie op? (bijvoorbeeld met zonnepanelen)">
+    <label for="solar-yes">Ja!!! ☀️ <input type="radio" name="solar" id="solar-yes" value="Yes"></label>
+    <label for="solar-no">Nee ☁️ <input type="radio" name="solar" id="solar-no" value="No"></label>
+</fieldset>
+
+<!-- if generates own green energy -->
+<input required type="text" cf-questions="Je bent echt fantastisch! 🤩 Hoezo heb je besloten om groene energie zelf te gaan opwekken?" name="if-solar" id="if-solar" cf-conditional-solar="Yes">
+
+<!-- Convince to use green energy -->
+<fieldset cf-questions="Heb je wellicht ooit geprobeerd om iemand anders te overtuigen om groene energie te gaan gebruiken?">
+    <label for="green-convince-yes">Dat heb ik inderdaad geprobeerd <input type="radio" name="green-convince" id="green-convince-yes" value="Yes"></label>
+    <label for="green-convince-no">Nee, dat is niet echt mijn ding<input type="radio" name="green-convince" id="green-convince-no" value="No"></label>
+</fieldset>
+
+<!-- If convinces to use green energy -->
+<input required cf-questions="{name}: de groene energie evangalist! 🍃 Welk argument gebruik je voornamelijk om ze te overtuigen?" id="if-green-energy-convince" name="if-green-energy-convince" type="text" cf-conditional-green-convince="Yes">
+
+<!-- Green energy community -->
+<fieldset cf-questions="Ok! Ik ben eigenlijk wel benieuwd of je mensen kent die ook zo over groene energie denken?">
+    <label for="community-yes">Ja! <input type="radio" name="community" id="community-yes" value="Yes"></label>
+    <label for="community-no">Nee. <input type="radio" name="community" id="community-no" value="No"></label>
+</fieldset>
+
+<!-- if community -->
+<input required type="text" name="if-community" id="if-community" cf-conditional-community="Yes" cf-questions="Wat goed! Het zou geweldig zijn als je die mensen kan vertellen over mij! <br>Op welke manier ben je in contact met deze mensen? Bijvoorbeeld, hebben jullie een WhatsApp of Facebook groep, een forum of zien jullie elkaar bij bijeenkomsten?">
+
+<!-- Motivations -->
+<input required type="text" cf-questions="Naast het redden van de planeet, wat motiveert jou om groene energie te gaan gebruiken?" name="green-motivations" id="green-motivations">
+
+<!-- Magic wand -->
+<input required type="text" cf-questions="Hm, interessant 👍 Stel dat je iets zou hebben dat iedereen zou motiveren om groene energie te gebruiken. Wat zou het zijn?" id="magicwand" name="magicwand">
+
+<!-- Next step -->
+<input required type="text" name="nextstep" id="nextstep" cf-questions="Echt een goed idee 😍 <br>Dus wat zou je persoonlijk willen doen om groener te worden?">
+
+<!-- Stopping from being greener -->
+<input required type="text" name="stopping_nextstep" id="stopping_nextstep" cf-questions="En wat houd je tegen om dat te doen?">
+
+<!-- Ask for e-mail -->
+<fieldset cf-questions="Ik snap het! Dan nog een dingetje... Het zou geweldig zijn als we in contact kunnen blijven! Ik beloof je dat ik je niet te veel zal storen 😉<br>Zou je dat OK vinden?">
+    <label for="email-yes">Klinkt goed! <input type="radio" name="cfc-email" id="email-yes" value="Yes"></label>
+    <label for="email-no">Nee 😭😭 <input type="radio" name="cfc-email" id="email-no" value="No"></label>
+</fieldset>
+
+<!-- If e-mail yes -->
+<input required cf-conditional-cfc-email="Yes" cf-questions="Ik ben erg blij om dat te horen! 😊 Kan je mij dan je e-mailadres geven?" name="email_address" id="email_address" cf-error="Oops, Dat e-mailadres kan ik niet begrijpen 😅" cf-validation="window.emailCheck">
+<script>
+    var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    var emailCheck = function(dto, success, error){
+      //console.log("emailValidation, dto:", dto, success, error);
+      if (isNo(dto.text)) {
+        window.ConversationalForm.addRobotChatResponse("Ok dan, zoals je wilt 😢");
+        return success();
+      }
+      if(emailRegex.test(dto.text)) {
+          window.ConversationalForm.addRobotChatResponse("Opgeslagen!");
+          return success();
+      } else {
+          return error();
+      }
+  };
+</script>
+
+<!-- Closing -->
+<input required type="text" name="closing" id="closing" cf-questions="Het was fijn om met je te praten {name}! Is er nog iets anders dat je mij wilt vertellen over de groene energietransitie in Amsterdam?" cf-validation="window.closingCheck">
+<script>
+    var closingCheck = function(dto, success, error){
+      //console.log("closingValidation, dto:", dto, success, error);
+      window.ConversationalForm.addRobotChatResponse("OK! Doei! 👋");
+      //window.ConversationalForm.addRobotChatResponse("Heb een hele zonnige dag 🌞");
+      var d = new Date();
+      var h = d.getHours();
+      var day = d.getDay();
+      var days = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+      if ((day == 6) || (day == 0)) {
+          m = "Heb nog een fijn weekend!";
+      } else if ((day == 1) && (h < 12)) {
+          m = "Fijne week!";
+      } else if ((day == 5) && (h > 15)) {
+          m = "Heb een fijn weekend!";
+      } else if (h > 17) {
+          m = "Nog een fijne " + days[day] + "-avond!";
+      } else {
+          m = "Nog een fijne " + days[day] + "!";
+      }
+      window.ConversationalForm.addRobotChatResponse(m);
+      window.ConversationalForm.addRobotChatResponse('<a href="index.html">Click here to return to my start page 🤖</a>');
+      return success();
+  };
+</script>
+
+<!-- End Dutch Version -->

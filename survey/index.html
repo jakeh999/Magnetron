@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/survey/apple-touch-icon.png?v=PY4PLAQrdz">
+    <link rel="icon" type="image/png" sizes="32x32" href="/survey/favicon-32x32.png?v=PY4PLAQrdz">
+    <link rel="icon" type="image/png" sizes="16x16" href="/survey/favicon-16x16.png?v=PY4PLAQrdz">
+    <link rel="manifest" href="/survey/site.webmanifest?v=PY4PLAQrdz">
+    <link rel="mask-icon" href="/survey/safari-pinned-tab.svg?v=PY4PLAQrdz" color="#5bbad5">
+    <link rel="shortcut icon" href="/survey/favicon.ico?v=PY4PLAQrdz">
+    <meta name="apple-mobile-web-app-title" content="MAGNETRON">
+    <meta name="application-name" content="MAGNETRON">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/survey/browserconfig.xml?v=PY4PLAQrdz">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Bootstrap & CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/landing.css?v=2">
+    <title>I'm MAGNETRON, an energy survey bot.</title>
+    <script>
+        function GET(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+        function start_chat(lang) {
+            var baseURL = "https://greenamsterdam.nl/survey/";
+            if (document.getElementById("forget_" + lang).checked == true) {
+                location.href = baseURL + "magnetron.php?lang=" + lang + "&forget=true";
+            } else {
+                location.href = baseURL + "magnetron.php?lang=" + lang;
+            }
+        }
+        function change_forget(lang, other_lang, forget) {
+            document.getElementById("forget_" + other_lang).checked = forget;
+            document.getElementById("privacy").href = "privacy.html?lang=" + lang + "&forget=" + forget;
+        }
+        function change_lang(lang, hide) {
+            document.getElementById(hide).style.display = "none";
+            document.getElementById(lang).style.display = "block";
+            document.getElementById("privacy").href = "privacy.html?lang=" + lang + "&forget="  + document.getElementById("forget_" + lang).checked;
+            if (lang=='nl') {
+                document.title = "Ik ben MAGNETRON, de energie enquête robot.";
+            } else {
+                document.title = "I'm MAGNETRON, an energy survey bot.";
+            }
+        }
+    </script>  
+  </head>
+  <body>
+   <div class="container" id="pink">
+       <div class="row">
+            <div class="col text-center text-md-left pt-lg-2">
+                <img src="img/leaf.svg" width="81" height="88">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-1" id="yellow">
+                <div class="row pr-0">
+                    <div class="col-xl-3 col-lg-3 text-center text-lg-left pt-lg-5 pl-lg-5">
+                        <img src="img/robot.svg" width="161" height="247">
+                    </div>
+                    <div class="col-xl-6 col-lg-5 pt-lg-5" style="text-align:center; padding-bottom:30px;">
+                        <span id="en" lang="en">
+                            <p class="hello">Hi,<br>I'm Magnetron</p>
+                            <p class="subtitle">the energy survey bot</p>
+                            <div class="line"></div>
+                            <p class="txt" style="font-size: 20px;">
+                                You are about to talk to Magnetron, our own personal survey bot. He would like to have a chat with you about your energy consumption. It will take about 10 minutes of your time, but you can come back later to finish with his cookie.
+                            </p>
+                            <p class="txt about">Created by Team Cynergy of <br><a href="https://medialabamsterdam.com/cynergy/">MediaLAB Amsterdam</a></p>
+                            <a class="form-check" onclick="start_chat('en');return false;" href="#"><span id="btn">let's chat!</span></a>
+                            <div class="form-check" style="margin-top: 7px;">
+                                <input type="checkbox" class="form-check-input" id="forget_en" name="forget_en" onchange="change_forget('en', 'nl', this.checked);">
+                                <label class="form-check-label" for="forget_en">Don't remember my progress</label>
+                            </div>
+                            <p class="form-check" style="margin-top: 50px;"><a href="#" onclick="change_lang('nl','en');return false;">Ik spreek ook Nederlands! <img src="img/nl.svg" class="flag" alt="🇳🇱" height="15" width="20"></a></p>
+                        </span>
+                        <span id="nl" lang="nl" style="display:none;">
+                                <p class="hello">Hoi,<br>Ik ben Magnetron</p>
+                                <p class="subtitle">de energie enquête robot</p>
+                                <div class="line"></div>
+                                <p class="txt" style="font-size: 20px;">
+                                    Je gaat zometeen praten met Magnetron, onze persoonlijke enquête robot. Hij wilt graag met je praten over je energie verbruik. Het zal ongeveer 10 minuten duren, maar je kan later terugkomen om het af te ronden als je zijn cookie accepteert.
+                                </p>
+                                <p class="txt about">Ontworpen door Team Cynergy van <br><a href="https://medialabamsterdam.com/cynergy/">MediaLAB Amsterdam</a></p>
+                                <a class="form-check" onclick="start_chat('nl');return false;" href="#"><span id="btn">laten we praten!</span></a>
+                                <div class="form-check" style="margin-top: 7px;">
+                                        <input type="checkbox" class="form-check-input" id="forget_nl" name="forget_nl" onchange="change_forget('nl', 'en', this.checked);">
+                                        <label class="form-check-label" for="forget_nl">Onthoud mijn voortgang niet</label>
+                                </div>
+                                <p class="form-check" style="margin-top: 50px;"><a href="#" onclick="change_lang('en','nl');return false;">I also speak English! <img src="img/us.svg" class="flag" alt="🇺🇸" height="15" width="20"></a></p>
+                        </span>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 text-center text-lg-right" style="padding-bottom:30px;">
+                        <a href="/"><img src="img/cynergy.svg" width="209" height="65"></a>
+                        <a style="position:absolute; bottom:40px; right:15px;" id="privacy" href="privacy.html">Privacy</a>
+                        <script>
+                                if (GET('forget') == 'true') {
+                                    document.getElementById('forget_en').checked = true;
+                                    document.getElementById('forget_nl').checked = true;
+                                }
+                                if (GET('lang') == 'nl') {
+                                    change_lang('nl','en');
+                                } else if (GET('forget') == 'true') {
+                                    document.getElementById('privacy').href += '?forget=true';
+                                }
+                                if ((navigator.language.substr(0,2)=='nl') && (GET('lang')!='en')) {
+                                    change_lang('nl','en');
+                                }
+                        </script>
+                    </div>
+                </div>
+            </div> 
+        </div>
+   </div>
+  </body>
+</html>
