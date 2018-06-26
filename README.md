@@ -6,22 +6,22 @@ Specific information about Magnetron can be found at https://greenamsterdam.nl/b
 
 Try it out at https://greenamsterdam.nl/survey
 
-#Setup
+# Setup
 
-##Requirements
+## Requirements
 * PHP (version 7.2 recommended)
 * Apache (probably also works under nginx)
 * MySQL (probably also works udner MariaDB)
 * Tested on Ubuntu 18.04
 
-##Install steps
+## Install steps
 1. Place the survey folder in the root directory of your website. 
 2. Run the Create_Table.sql file on a MySQL database.
 3. Configure the db.inc.php accordingly with your database information.
 4. Try it out!
 
-#Credits
-*Conversational Forms v0.9.83 - https://github.com/space10-community/conversational-form
-*JS Cookie - https://github.com/js-cookie/js-cookie
-*Bootstrap 4 for landing page - https://getbootstrap.com/
-*The Noun Project for Robot icon - https://thenounproject.com/
+# Credits
+* Conversational Forms v0.9.83 - https://github.com/space10-community/conversational-form
+* JS Cookie - https://github.com/js-cookie/js-cookie
+* Bootstrap 4 for landing page - https://getbootstrap.com/
+* The Noun Project for Robot icon - https://thenounproject.com/
